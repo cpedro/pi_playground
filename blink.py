@@ -20,9 +20,6 @@ from signal import signal, SIGINT
 
 def main(args):
     wiringpi.wiringPiSetup()
-     
-    wiringpi.pinMode(0,1)
-     
     try:
         while True:
             loop()
@@ -32,13 +29,13 @@ def main(args):
 
 def loop():
     time.sleep(0.5)
-    wiringpi.digitalWrite(0,1)
+    wiringpi.digitalWrite(0, 1)
     time.sleep(0.5)
-    wiringpi.digitalWrite(0,0)
+    wiringpi.digitalWrite(0, 0)
 
 
 def destroy():
-    wiringpi.digitalWrite(0,0)
+    wiringpi.digitalWrite(0, 0)
 
 
 if __name__ == '__main__':
