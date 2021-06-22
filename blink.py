@@ -28,10 +28,10 @@ def main(args):
 
 
 def loop():
-    time.sleep(0.5)
     wiringpi.digitalWrite(0, 1)
     time.sleep(0.5)
     wiringpi.digitalWrite(0, 0)
+    time.sleep(0.5)
 
 
 def destroy():
