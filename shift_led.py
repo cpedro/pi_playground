@@ -17,11 +17,13 @@ import wiringpi
 import utils
 
 
-time_delay = 0.5
+# Change to define output pins.  By default uses WiringPi 0, 2, 3.
 clock_pin = 0
 latch_pin = 2
 data_pin = 3
+pins = [clock_pin, latch_pin, data_pin]
 
+time_delay = 0.5
 loop_count = 0
 
 
@@ -42,20 +44,20 @@ def update_shift_register(bit_order, leds):
 
 def setup():
     wiringpi.wiringPiSetup()
-    wiringpi.pinMode(clock_pin, wiringpi.OUTPUT)
-    wiringpi.pinMode(latch_pin, wiringpi.OUTPUT)
-    wiringpi.pinMode(data_pin, wiringpi.OUTPUT)
+    for pin in pins:
+        wiringpi.pinMode(pin, wiringpi.OUTPUT)
+    update_shift_register(wiringpi.LSBFIRST, int('0x00', 16))
 
 
 def loop():
-    # Loop between LSB and MSB
+    # Alternate between LSB and MSB
     global loop_count
     loop_count += 1
     bit_order = wiringpi.LSBFIRST if loop_count % 2 else wiringpi.MSBFIRST
 
     # Start with clear LEDs
-    leds = 0
-    update_shift_register(0, leds)
+    leds = int('0x00', 16)
+    # Loop through bits, setting each and updating the shift register.
     for i in range(8):
         leds = utils.set_bit(leds, i)
         update_shift_register(bit_order, leds)
@@ -63,10 +65,9 @@ def loop():
 
 
 def destroy():
-    update_shift_register(0, 0)
-    wiringpi.digitalWrite(clock_pin, wiringpi.LOW)
-    wiringpi.digitalWrite(latch_pin, wiringpi.LOW)
-    wiringpi.digitalWrite(data_pin, wiringpi.LOW)
+    update_shift_register(wiringpi.LSBFIRST, int('0x00', 16))
+    for pin in pins:
+        wiringpi.digitalWrite(pin, wiringpi.LOW)
 
 
 if __name__ == '__main__':
