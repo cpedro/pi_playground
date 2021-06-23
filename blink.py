@@ -20,6 +20,7 @@ from signal import signal, SIGINT
 
 def main(args):
     wiringpi.wiringPiSetup()
+    wiringpi.pinMode(0, 1)
     try:
         while True:
             loop()
