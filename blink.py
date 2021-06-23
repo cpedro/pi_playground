@@ -15,8 +15,6 @@ import sys
 import time
 import wiringpi
 
-from signal import signal, SIGINT
-
 
 def main(args):
     wiringpi.wiringPiSetup()
